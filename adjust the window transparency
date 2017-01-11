@@ -1,0 +1,55 @@
+;CREATER: Mzp_Drkp2017
+;
+; Left shift + mouse wheel to adjust the window transparency (set the transparency of 30-255, less than 30 is basically invisible, if necessary, can modify yourself) 2016.09.20.by M. (2017.01.11__1635 edit again.M)
+;
+;Instructions for use:
+; ◆ left shift + wheel down: reduce the transparency,  10 at a time
+; ◆ left shift + wheel up: increase the transparency, 20 at a time
+; ◆ left shift + middle button press: restore transparency to 255 (completely opaque).
+;
+
+~LShift & WheelUp::
+; transparency adjustment， increase
+WinGet, Transparent, Transparent,A
+If (Transparent="")
+    Transparent=255
+    ;Transparent_New:=Transparent+10
+    Transparent_New:=Transparent+20    ;◆Speed of increase transparency
+    If (Transparent_New > 254)
+                    Transparent_New =255
+    WinSet,Transparent,%Transparent_New%,A
+
+    tooltip now: ▲%Transparent_New%`nmae: __%Transparent%  
+    ;sleep 1500
+    SetTimer, RemoveToolTip_transparent_Lwin__2016.09.20, 1500  ;format，label in the end
+return
+
+~LShift & WheelDown::
+;; transparency adjustment， reduce。
+WinGet, Transparent, Transparent,A
+If (Transparent="")
+    Transparent=255
+    Transparent_New:=Transparent-10  ;◆Speed of reduce transparency
+    ;msgbox,Transparent_New=%Transparent_New%
+            If (Transparent_New < 30)    ;◆minimum transparency。
+                    Transparent_New = 30
+    WinSet,Transparent,%Transparent_New%,A
+    tooltip now: ▲%Transparent_New%`nmae: __%Transparent%  
+    ;sleep 1500
+    SetTimer, RemoveToolTip_transparent_Lwin__2016.09.20, 1500  ;;format，label in the end
+return
+
+;set Lwin &Mbutton restored the transparent to 255。
+~Lshift & Mbutton::  
+WinGet, Transparent, Transparent,A
+WinSet,Transparent,255,A  
+tooltip ▲Restored ;。
+;sleep 1500
+SetTimer, RemoveToolTip_transparent_Lwin__2016.09.20, 1500  ;format，label in the end。
+return
+
+
+removetooltip_transparent_Lwin__2016.09.20:     ;LABEL
+tooltip
+SetTimer, RemoveToolTip_transparent_Lwin__2016.09.20, Off
+return
